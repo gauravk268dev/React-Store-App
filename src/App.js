@@ -34,10 +34,12 @@ function App() {
     saveLocalCart();
   }, [cartItems]);
 
+  useEffect(() => {}, [items]);
+
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        <Navbar cartItems={cartItems} />
         <Switch>
           <Route
             path="/"
