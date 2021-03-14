@@ -1,11 +1,13 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import Navbar from "./components/Navbar";
-import About from "./components/About";
-import Cart from "./components/Cart";
-import Contact from "./components/Contact";
-import ProductView from "./components/ProductView";
-// import products from "./components/data/products";
+import {
+  Navbar,
+  About,
+  Cart,
+  Contact,
+  ProductView,
+  Error404,
+} from "./components/";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import db from './components/firebase/config';
 
@@ -34,7 +36,26 @@ function App() {
     saveLocalCart();
   }, [cartItems]);
 
-  useEffect(() => {}, [items]);
+  useEffect(() => {
+    const getProducts = async () => {
+      const response = await fetch("https://fakestoreapi.com/products");
+      const data = await response.json();
+      // console.log(data);
+      setItems(
+        data.map((item) => {
+          return {
+            ...item,
+            addedToCart: false,
+            addToCartButtonValue: "Add to Cart",
+            addToCartButtonClass: "btn btn-info",
+          };
+        })
+      );
+      // console.log(data);
+    };
+
+    getProducts();
+  }, []);
 
   return (
     <Router>
@@ -46,7 +67,6 @@ function App() {
             exact
             component={() => (
               <Home
-                setItems={setItems}
                 setCartItems={setCartItems}
                 items={items}
                 cartItems={cartItems}
@@ -61,18 +81,18 @@ function App() {
             )}
           />
           <Route path="/contact" component={() => <Contact />} />
+          <Route path="*" component={() => <Error404 />} />
         </Switch>
       </div>
     </Router>
   );
 }
 
-const Home = ({ setItems, setCartItems, items, cartItems }) => {
+const Home = ({ setCartItems, items, cartItems }) => {
   return (
     <div>
       <h1>Home Page</h1>
       <ProductView
-        setItems={setItems}
         setCartItems={setCartItems}
         items={items}
         cartItems={cartItems}
