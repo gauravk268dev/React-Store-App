@@ -49,7 +49,7 @@ const Cart = ({ cartItems, setCartItems }) => {
         <button className="btn btn-info cart-total">
           Cart Total: {totalCartValue} $
         </button>
-        `(totalCartValue===0)?<button className="btn btn-primary proceed-to-buy">Proceed to Buy</button>:{}`
+        <button className="btn btn-primary proceed-to-buy">Proceed to Buy</button>
       </div>
     </div>
   );
